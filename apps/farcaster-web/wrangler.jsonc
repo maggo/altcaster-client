@@ -1,0 +1,21 @@
+{
+  // The hosted web client on altcaster.xyz: the production build in dist/ as
+  // static assets, plus a passthrough to Farcaster's API at /~api and /stream
+  // (worker/index.ts). Deploy with `pnpm deploy:cloudflare`.
+  "name": "altcaster-web",
+  "account_id": "592c9fbea53d793527cc6078b8fe4502",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-04-01",
+  "observability": { "enabled": true },
+  "routes": [{ "pattern": "altcaster.xyz", "custom_domain": true }],
+  "assets": {
+    "directory": "dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/~api/*", "/stream"]
+  },
+  "vars": {
+    "API_URL": "https://farcaster.xyz/~api",
+    "STREAM_URL": "https://ws.farcaster.xyz"
+  }
+}

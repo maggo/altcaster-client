@@ -101,6 +101,8 @@
     "dev": "pnpm sync-sitemap-index && vite",
     "start": "pnpm sync-sitemap-index && HTTPS=true vite",
     "build": "pnpm sync-sitemap-index && vite build",
+    "deploy:cloudflare": "VITE_SAME_ORIGIN_API=true pnpm build && pnpm dlx wrangler@4.86.0 deploy",
+    "dev:cloudflare": "pnpm dlx wrangler@4.86.0 dev --port 8790",
     "profile:bundle": "pnpm sync-sitemap-index && BUNDLE_ANALYZER=true vite build",
     "test": "vitest run",
     "format": "prettier --write \"**/*.{ts,tsx,js,json}\" --config ../../.prettierrc.js --ignore-path ../../.prettierignore",
