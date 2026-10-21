@@ -235,8 +235,8 @@ export function HomeLandingPage() {
         <div className="flex w-full flex-row items-center justify-between">
           <div className="flex flex-row items-center space-x-0.5">
             <span className="font-seasonMix text-[rgba(255,255,255,0.5)]">
-              Copyright © {new Date().getFullYear()} Neynar. All rights
-              reserved.
+              Altcaster: an unofficial Farcaster client, built on Neynar&apos;s
+              MIT-licensed farcaster-web.
             </span>
           </div>
           <div className="flex flex-row items-center space-x-6">

@@ -18,9 +18,23 @@ function isLocalApiEnabled(): boolean {
 
 const useLocalApi = isLocalApiEnabled();
 
-const baseApiHost = useLocalApi ? 'localhost:8080' : 'farcaster.xyz/~api';
+// Build with `VITE_SAME_ORIGIN_API=true` when the site is served by a Worker
+// that proxies the API at `/~api` and the stream at `/stream` (the API's CORS
+// only allows Farcaster's own origins).
+const useSameOriginApi =
+  !useLocalApi &&
+  import.meta.env.VITE_SAME_ORIGIN_API === 'true' &&
+  typeof window !== 'undefined';
 
-const baseUseHttps = !useLocalApi;
+const baseApiHost = useLocalApi
+  ? 'localhost:8080'
+  : useSameOriginApi
+    ? `${window.location.host}/~api`
+    : 'farcaster.xyz/~api';
+
+const baseUseHttps = useSameOriginApi
+  ? window.location.protocol === 'https:'
+  : !useLocalApi;
 
 const baseApiUrl = baseUseHttps
   ? `https://${baseApiHost}`
@@ -28,6 +42,8 @@ const baseApiUrl = baseUseHttps
 
 const wsUrl = useLocalApi
   ? `ws://${baseApiHost}/stream`
-  : 'wss://ws.farcaster.xyz/stream';
+  : useSameOriginApi
+    ? `${baseUseHttps ? 'wss' : 'ws'}://${window.location.host}/stream`
+    : 'wss://ws.farcaster.xyz/stream';
 
 export { baseApiHost, baseApiUrl, baseUseHttps, STORAGE_KEY, wsUrl };
